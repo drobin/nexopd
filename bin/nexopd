@@ -23,12 +23,13 @@ opts = GetoptLong.new(
 
 opts.each do |opt, arg|
   case opt
-  when '--config-file' then $server_settings = Nexopd::Settings::Server.from_file(arg)
+  when '--config-file' then $config_file = arg.clone
   when '--help'        then usage
   end
 end
 
-usage if $server_settings.nil?
+usage if $config_file.nil? || !File.exists?($config_file)
+$server_settings, $session_settings = Nexopd::Settings.from_file($config_file)
 
 EventMachine.run do
   Signal.trap("INT")  { EventMachine.stop }

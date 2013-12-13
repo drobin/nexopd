@@ -20,15 +20,6 @@ module Nexopd
 
         self
       end
-
-      def self.from_file(path)
-        server = Server.new
-
-        eval(File.open(path).read, binding)
-        server.validate
-
-        server
-      end
     end
   end
 end
